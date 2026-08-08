@@ -1,16 +1,24 @@
 <!DOCTYPE html>
-
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gi.Code - Dictée vocale</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gi.Code – Dictée vocale</title>
+  <link rel="icon" href="https://i.ibb.co/27xRzqTQ/logo.png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
-    
-body { font-family: Arial, sans-serif; text-align: center; padding: 40px; background: #f4f6f9; }  textarea { width: 80%; max-width: 900px; height: 300px; font-size: 18px; padding: 15px; border-radius: 10px; border: 2px solid #ccc; outline: none; resize: vertical; box-sizing: border-box; } textarea:focus { border-color: #0078D4; } button { margin: 15px 5px 0; padding: 12px 22px; font-size: 17px; border: none; border-radius: 8px; cursor: pointer; color: white; } #start { background: #0078D4; } #start:hover { background: #005ea6; } #stop { background: #d9534f; } #stop:hover { background: #b52b27; } #clear { background: #555; } #clear:hover { background: #333; } #status { margin-top: 20px; font-size: 16px; color: #555; font-weight: bold; }
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #e9f0f7, #f5f7fa);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+    }
 
-header {
+    header {
       width: 100%;
       background: #0078d4;
       color: white;
@@ -30,177 +38,109 @@ header {
       font-size: 22px;
       font-weight: 600;
     }
-  </style>
 
+    textarea {
+      width: 85%;
+      height: 400px;
+      font-size: 18px;
+      margin-top: 40px;
+      border-radius: 12px;
+      border: 2px solid #0078d4;
+      padding: 15px;
+      resize: none;
+      outline: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: white;
+    }
+
+    .buttons {
+      margin-top: 25px;
+      display: flex;
+      gap: 20px;
+    }
+
+    button {
+      background: #0078d4;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 10px;
+      font-size: 17px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    }
+
+    button:hover {
+      background: #005fa3;
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: 30px;
+      color: #777;
+      font-size: 14px;
+    }
+  </style>
 </head>
 
 <body>
-    <header>
+  <header>
     <img src="https://i.ibb.co/27xRzqTQ/logo.png" alt="Gi.Code Logo" />
     <h1>🎙️ Gi.Code – Dictée vocale intelligente</h1>
   </header>
 
-  <h1>🗣️ Dictée vocale - Gi.Code</h1>
+  <textarea id="texte" placeholder="Parlez ici ou saisissez du texte..."></textarea>
 
-  <textarea
-    id="text"
-    placeholder="Cliquez sur « Démarrer la dictée », puis parlez..."
-  ></textarea>
+  <div class="buttons">
+    <button id="start">🎧 Démarrer la dictée</button>
+    <button id="stop">🛑 Arrêter</button>
+    <button id="pdf">📄 Exporter en PDF</button>
+  </div>
 
-  <br>
-
-<button id="start">🎙️ Démarrer la dictée</button> <button id="stop">⏹️ Arrêter</button> <button id="clear">🗑️ Effacer</button>
-
-  <div id="status">🔴 Dictée arrêtée</div>
+  <footer>© 2025 Gi.Code Formation – Bureautique & Développement</footer>
 
   <script>
-    const buttonStart = document.getElementById("start");
-    const buttonStop = document.getElementById("stop");
-    const buttonClear = document.getElementById("clear");
-    const text = document.getElementById("text");
-    const status = document.getElementById("status");
+    const { jsPDF } = window.jspdf;
+    const startBtn = document.getElementById("start");
+    const stopBtn = document.getElementById("stop");
+    const pdfBtn = document.getElementById("pdf");
+    const texte = document.getElementById("texte");
 
-    // Vérification de la compatibilité
-    const SpeechRecognition =
-      window.SpeechRecognition ||
-      window.webkitSpeechRecognition;
+    // 🎤 Configuration de la reconnaissance vocale
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+    recognition.lang = "fr-FR";
+    recognition.continuous = true;
+    recognition.interimResults = false;
 
-    if (!SpeechRecognition) {
+    recognition.onresult = (event) => {
+      const transcript = event.results[event.results.length - 1][0].transcript;
+      texte.value += transcript + " ";
+    };
 
-      buttonStart.disabled = true;
+    recognition.onerror = (event) => {
+      alert("Erreur de reconnaissance vocale : " + event.error);
+    };
 
-      status.textContent =
-        "❌ La reconnaissance vocale n'est pas supportée par ce navigateur.";
+    startBtn.onclick = () => {
+      recognition.start();
+      startBtn.textContent = "🎧 En écoute...";
+    };
 
-    } else {
+    stopBtn.onclick = () => {
+      recognition.stop();
+      startBtn.textContent = "🎙️ Démarrer la dictée";
+    };
 
-      const recognition = new SpeechRecognition();
-
-      recognition.lang = "fr-FR";
-
-      // Continue l'écoute tant que possible
-      recognition.continuous = true;
-
-      // Retourne aussi les résultats provisoires
-      recognition.interimResults = true;
-
-      let listening = false;
-
-      // ===============================
-      // DÉMARRER
-      // ===============================
-
-      buttonStart.addEventListener("click", () => {
-
-        if (listening) return;
-
-        try {
-
-          recognition.start();
-
-        } catch (error) {
-
-          console.log("Reconnaissance déjà démarrée.");
-
-        }
-
-      });
-
-      // ===============================
-      // RÉSULTAT
-      // ===============================
-
-      recognition.onresult = (event) => {
-
-        let finalText = "";
-
-        for (
-          let i = event.resultIndex;
-          i < event.results.length;
-          i++
-        ) {
-
-          const transcript =
-            event.results[i][0].transcript;
-
-          if (event.results[i].isFinal) {
-            finalText += transcript + " ";
-          }
-        }
-
-        if (finalText) {
-          text.value += finalText;
-        }
-      };
-
-      // ===============================
-      // DÉBUT DE L'ÉCOUTE
-      // ===============================
-
-      recognition.onstart = () => {
-
-        listening = true;
-
-        buttonStart.textContent = "🎧 En écoute...";
-
-        status.textContent =
-          "🟢 Gi.Code écoute... Parlez maintenant.";
-      };
-
-      // ===============================
-      // ARRÊT
-      // ===============================
-
-      buttonStop.addEventListener("click", () => {
-
-        if (!listening) return;
-
-        recognition.stop();
-
-      });
-
-      recognition.onend = () => {
-
-        listening = false;
-
-        buttonStart.textContent =
-          "🎙️ Démarrer la dictée";
-
-        status.textContent =
-          "🔴 Dictée arrêtée";
-      };
-
-      // ===============================
-      // EFFACER
-      // ===============================
-
-      buttonClear.addEventListener("click", () => {
-
-        text.value = "";
-
-      });
-
-      // ===============================
-      // ERREUR
-      // ===============================
-
-      recognition.onerror = (event) => {
-
-        listening = false;
-
-        buttonStart.textContent =
-          "🎙️ Démarrer la dictée";
-
-        status.textContent =
-          "❌ Erreur : " + event.error;
-
-        console.error(
-          "Erreur de reconnaissance vocale :",
-          event.error
-        );
-      };
-    }
+    // 📄 Export PDF
+    pdfBtn.onclick = () => {
+      const doc = new jsPDF();
+      doc.setFont("helvetica", "normal");
+      const lines = doc.splitTextToSize(texte.value, 180);
+      doc.text(lines, 15, 20);
+      doc.save("GiCode_Dictee_Vocale.pdf");
+    };
   </script>
-
 </body>
 </html>
