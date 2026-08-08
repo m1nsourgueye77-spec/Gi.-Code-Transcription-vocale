@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gi.Code - Dictée vocale</title>
+
+  <style>
+    
+body { font-family: Arial, sans-serif; text-align: center; padding: 40px; background: #f4f6f9; }  textarea { width: 80%; max-width: 900px; height: 300px; font-size: 18px; padding: 15px; border-radius: 10px; border: 2px solid #ccc; outline: none; resize: vertical; box-sizing: border-box; } textarea:focus { border-color: #0078D4; } button { margin: 15px 5px 0; padding: 12px 22px; font-size: 17px; border: none; border-radius: 8px; cursor: pointer; color: white; } #start { background: #0078D4; } #start:hover { background: #005ea6; } #stop { background: #d9534f; } #stop:hover { background: #b52b27; } #clear { background: #555; } #clear:hover { background: #333; } #status { margin-top: 20px; font-size: 16px; color: #555; font-weight: bold; }
+
+header {
+      width: 100%;
+      background: #0078d4;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 40px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    header img {
+      height: 50px;
+      border-radius: 10px;
+    }
+
+    header h1 {
+      font-size: 22px;
+      font-weight: 600;
+    }
+  </style>
+
+</head>
+
+<body>
+    <header>
+    <img src="https://i.ibb.co/27xRzqTQ/logo.png" alt="Gi.Code Logo" />
+    <h1>🎙️ Gi.Code – Dictée vocale intelligente</h1>
+  </header>
+
+  <h1>🗣️ Dictée vocale - Gi.Code</h1>
+
+  <textarea
+    id="text"
+    placeholder="Cliquez sur « Démarrer la dictée », puis parlez..."
+  ></textarea>
+
+  <br>
+
+<button id="start">🎙️ Démarrer la dictée</button> <button id="stop">⏹️ Arrêter</button> <button id="clear">🗑️ Effacer</button>
+
+  <div id="status">🔴 Dictée arrêtée</div>
+
+  <script>
+    const buttonStart = document.getElementById("start");
+    const buttonStop = document.getElementById("stop");
+    const buttonClear = document.getElementById("clear");
+    const text = document.getElementById("text");
+    const status = document.getElementById("status");
+
+    // Vérification de la compatibilité
+    const SpeechRecognition =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+
+      buttonStart.disabled = true;
+
+      status.textContent =
+        "❌ La reconnaissance vocale n'est pas supportée par ce navigateur.";
+
+    } else {
+
+      const recognition = new SpeechRecognition();
+
+      recognition.lang = "fr-FR";
+
+      // Continue l'écoute tant que possible
+      recognition.continuous = true;
+
+      // Retourne aussi les résultats provisoires
+      recognition.interimResults = true;
+
+      let listening = false;
+
+      // ===============================
+      // DÉMARRER
+      // ===============================
+
+      buttonStart.addEventListener("click", () => {
+
+        if (listening) return;
+
+        try {
+
+          recognition.start();
+
+        } catch (error) {
+
+          console.log("Reconnaissance déjà démarrée.");
+
+        }
+
+      });
+
+      // ===============================
+      // RÉSULTAT
+      // ===============================
+
+      recognition.onresult = (event) => {
+
+        let finalText = "";
+
+        for (
+          let i = event.resultIndex;
+          i < event.results.length;
+          i++
+        ) {
+
+          const transcript =
+            event.results[i][0].transcript;
+
+          if (event.results[i].isFinal) {
+            finalText += transcript + " ";
+          }
+        }
+
+        if (finalText) {
+          text.value += finalText;
+        }
+      };
+
+      // ===============================
+      // DÉBUT DE L'ÉCOUTE
+      // ===============================
+
+      recognition.onstart = () => {
+
+        listening = true;
+
+        buttonStart.textContent = "🎧 En écoute...";
+
+        status.textContent =
+          "🟢 Gi.Code écoute... Parlez maintenant.";
+      };
+
+      // ===============================
+      // ARRÊT
+      // ===============================
+
+      buttonStop.addEventListener("click", () => {
+
+        if (!listening) return;
+
+        recognition.stop();
+
+      });
+
+      recognition.onend = () => {
+
+        listening = false;
+
+        buttonStart.textContent =
+          "🎙️ Démarrer la dictée";
+
+        status.textContent =
+          "🔴 Dictée arrêtée";
+      };
+
+      // ===============================
+      // EFFACER
+      // ===============================
+
+      buttonClear.addEventListener("click", () => {
+
+        text.value = "";
+
+      });
+
+      // ===============================
+      // ERREUR
+      // ===============================
+
+      recognition.onerror = (event) => {
+
+        listening = false;
+
+        buttonStart.textContent =
+          "🎙️ Démarrer la dictée";
+
+        status.textContent =
+          "❌ Erreur : " + event.error;
+
+        console.error(
+          "Erreur de reconnaissance vocale :",
+          event.error
+        );
+      };
+    }
+  </script>
+
+</body>
+</html>
