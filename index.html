@@ -81,6 +81,195 @@
       color: #777;
       font-size: 14px;
     }
+
+
+    /* =========================================================
+   FOOTER GI.CODE — VERSION COMPACTE
+========================================================= */
+
+.gicode-footer {
+    background: #071a2b;
+    color: rgba(255,255,255,.75);
+    margin-top: 40px;
+}
+
+/* Contenu principal */
+.gicode-footer-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 30px 25px;
+    
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 30px;
+}
+
+/* =========================
+   IDENTITÉ
+========================= */
+
+.gicode-logo {
+    font-size: 25px;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.gicode-logo span {
+    color: #d4af37;
+}
+
+.gicode-footer-brand p {
+    max-width: 320px;
+    margin: 5px 0;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.gicode-slogan {
+    color: #d4af37 !important;
+    font-weight: 600;
+}
+
+/* =========================
+   COLONNES
+========================= */
+
+.gicode-footer-column {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.gicode-footer-column h3 {
+    color: white;
+    font-size: 15px;
+    margin: 0 0 7px;
+}
+
+.gicode-footer-column a {
+    color: rgba(255,255,255,.65);
+    text-decoration: none;
+    font-size: 13px;
+    transition: .3s ease;
+}
+
+.gicode-footer-column a:hover {
+    color: #d4af37;
+    transform: translateX(3px);
+}
+
+.gicode-footer-column p {
+    margin: 2px 0;
+    font-size: 13px;
+}
+
+/* =========================
+   ICÔNES
+========================= */
+
+.gicode-footer-column i {
+    width: 18px;
+    color: #d4af37;
+}
+
+/* =========================
+   RÉSEAUX SOCIAUX
+========================= */
+
+.gicode-social {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.gicode-social a {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(255,255,255,.08);
+    color: white;
+
+    transition: .3s ease;
+}
+
+.gicode-social a:hover {
+    background: #d4af37;
+    color: #071a2b;
+    transform: translateY(-3px);
+}
+
+/* =========================
+   BAS DU FOOTER
+========================= */
+
+.gicode-footer-bottom {
+    max-width: 1200px;
+    margin: auto;
+
+    padding: 12px 25px;
+
+    border-top: 1px solid rgba(255,255,255,.1);
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    font-size: 12px;
+}
+
+.gicode-footer-bottom p {
+    margin: 0;
+}
+
+.gicode-footer-bottom a {
+    margin-left: 15px;
+    color: rgba(255,255,255,.6);
+    text-decoration: none;
+}
+
+.gicode-footer-bottom a:hover {
+    color: #d4af37;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .gicode-footer-container {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 25px 20px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .gicode-footer-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 25px 20px;
+    }
+
+    .gicode-footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .gicode-footer-bottom a {
+        margin-left: 0;
+        margin-right: 12px;
+    }
+
+}
   </style>
 </head>
 
