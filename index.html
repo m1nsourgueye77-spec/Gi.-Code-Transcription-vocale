@@ -15,43 +15,72 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
     }
 
-    header {
-      width: 100%;
-      background: #0078d4;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 40px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
+    /* =========================
+   HEADER GI.CODE
+========================= */
 
-    header img {
-      height: 50px;
-      border-radius: 10px;
-    }
+header {
+    width: 100%;
+    box-sizing: border-box;
 
-    header h1 {
-      font-size: 22px;
-      font-weight: 600;
-    }
+    background: #071a2b;
+    color: white;
+
+    display: flex;
+    align-items: center;
+
+    padding: 10px 40px;
+
+    border-bottom: 3px solid #d4af37;
+
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-brand img {
+    height: 55px;
+    width: auto;
+    object-fit: contain;
+}
+
+.header-brand h1 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    color: white;
+}
+
+.header-brand span {
+    display: block;
+    margin-top: 3px;
+    font-size: 13px;
+    color: #d4af37;
+    font-weight: 600;
+}
 
     textarea {
-      width: 85%;
-      height: 400px;
-      font-size: 18px;
-      margin-top: 40px;
-      border-radius: 12px;
-      border: 2px solid #0078d4;
-      padding: 15px;
-      resize: none;
-      outline: none;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      background-color: white;
-    }
+    width: 85%;
+    max-width: 1100px;
+    height: 400px;
+    font-size: 18px;
+    margin-top: 40px;
+    border-radius: 12px;
+    border: 2px solid #d4af37;
+    padding: 15px;
+    resize: none;
+    outline: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,.1);
+    background-color: white;
+    box-sizing: border-box;
+}
 
     .buttons {
       margin-top: 25px;
@@ -60,30 +89,27 @@
     }
 
     button {
-      background: #0078d4;
-      color: white;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 10px;
-      font-size: 17px;
-      cursor: pointer;
-      transition: 0.3s;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-    }
+    background: #071a2b;
+    color: white;
+    border: 2px solid #d4af37;
+    padding: 12px 25px;
+    border-radius: 10px;
+    font-size: 17px;
+    cursor: pointer;
+    transition: .3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,.1);
+}
 
-    button:hover {
-      background: #005fa3;
-      transform: scale(1.05);
-    }
-
-    footer {
-      margin-top: 30px;
-      color: #777;
-      font-size: 14px;
-    }
+button:hover {
+    background: #d4af37;
+    color: #071a2b;
+    transform: scale(1.05);
+}
+    
 
 
-    /* =========================================================
+
+     /* =========================================================
    FOOTER GI.CODE — VERSION COMPACTE
 ========================================================= */
 
@@ -270,13 +296,68 @@
     }
 
 }
+
+
+
+/* =========================
+   LOGO GI.CODE
+========================= */
+
+.gicode-logo-img {
+    width: 190px;
+    height: auto;
+    display: block;
+    margin-bottom: 12px;
+}
+
+/* Harmonisation avec l'identité Gi.Code */
+.gicode-slogan {
+    color: #d4af37 !important;
+    font-weight: 700;
+}
+
+/* =========================
+   COULEUR GI.CODE
+========================= */
+
+:root {
+    --gicode-blue: #071a2b;
+    --gicode-gold: #d4af37;
+    --gicode-white: #ffffff;
+}
+
+.gicode-footer {
+    background: var(--gicode-blue);
+}
+
+.gicode-footer-column i {
+    color: var(--gicode-gold);
+}
+
+.gicode-footer-column a:hover {
+    color: var(--gicode-gold);
+}
+
+.gicode-social a:hover {
+    background: var(--gicode-gold);
+    color: var(--gicode-blue);
+}
+
+.gicode-footer-bottom a:hover {
+    color: var(--gicode-gold);
+}
   </style>
 </head>
 
 <body>
   <header>
-    <img src="https://i.ibb.co/27xRzqTQ/logo.png" alt="Gi.Code Logo" />
-    <h1>🎙️ Gi.Code – Dictée vocale intelligente</h1>
+    <div class="header-brand">
+        <img src="https://i.ibb.co/27xRzqTQ/logo.png" alt="Gi.Code Formation">
+        <div>
+            <h1>Gi.Code</h1>
+            <span>Dictée vocale intelligente</span>
+        </div>
+    </div>
   </header>
 
   <textarea id="texte" placeholder="Parlez ici ou saisissez du texte..."></textarea>
@@ -293,21 +374,20 @@
 
         <!-- IDENTITÉ -->
         <div class="gicode-footer-brand">
+    <img src="logo Gi. Code.png"
+         alt="Gi.Code Formation"
+         class="gicode-logo-img">
 
-            <div class="gicode-logo">
-                <span>Gi.</span>Code
-            </div>
+    <p>
+        Gi.Code Formation accompagne vos ambitions
+        avec des formations pratiques, innovantes
+        et orientées vers l'avenir.
+    </p>
 
-            <p>
-                Solutions numériques, formation professionnelle
-                et développement d'applications.
-            </p>
-
-            <p class="gicode-slogan">
-                Former • Développer • Innover
-            </p>
-
-        </div>
+    <p class="gicode-slogan">
+        Apprendre aujourd'hui, réussir demain.
+    </p>
+</div>
 
 
         <!-- CONTACT -->
